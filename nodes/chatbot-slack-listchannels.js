@@ -45,7 +45,7 @@ function SlackListChannelsNode(config) {
        
       var chatId = utils.getChatId(message);
       var messageId = utils.getMessageId(message);
-
+      var regex = message.regex ? message.regex : this.regex;
       // check transport compatibility
       if (!utils.matchTransport(node, message)) {
         return;
@@ -87,9 +87,9 @@ function SlackListChannelsNode(config) {
 		  },
 		*************************************************/
 		// `res` contains information about the channels
-		//console.log(this.regex)
+		//console.log(regex)
 		res.channels.forEach((c) =>{ 
-			if( c.name.match(this.regex)){
+			if( c.name.match(regex)){
 				output+="\n"+c.name+"  "+c.num_members; 
 				count++;
 			}
@@ -101,7 +101,7 @@ function SlackListChannelsNode(config) {
 		// also try to get an array of messages from config and pick one randomly
 		message.payload = {
 		    type: 'message',
-		    content: output+"\nFound "+count+" channels with regex '"+this.regex+"'",
+		    content: output+"\nFound "+count+" channels with regex '"+regex+"'",
 		    chatId: chatId,
 		    messageId: messageId,
 		    inbound: false
