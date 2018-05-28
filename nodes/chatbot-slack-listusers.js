@@ -13,12 +13,12 @@ function SlackListUsersNode(config) {
     var node = this;
 
     var global = this.context().global;
-    var environment = 'production';
+    var environment = this.context().global.environment === 'production' ? 'botProduction' : 'bot';
+    this.bot = config[environment];
+    this.config = RED.nodes.getNode(this.bot);
+    this.regex = config.regex || ".*";
 
-    this.bot = config.bot;
-    this.botProduction = config.botProduction;
-    this.track = config.track;
-    this.config = RED.nodes.getNode(this.botProduction);
+
 
     if (this.config) {
       this.status({fill: 'red', shape: 'ring', text: 'disconnected'});
@@ -46,6 +46,7 @@ function SlackListUsersNode(config) {
     this.on('input', function (message) {  
       this.listusers = config.listusers;
        
+      this.config = RED.nodes.getNode(this.bot);
       var chatId = utils.getChatId(message);
       var messageId = utils.getMessageId(message);
 
@@ -53,7 +54,7 @@ function SlackListUsersNode(config) {
       if (!utils.matchTransport(node, message)) {
         return;
       }
-      console.log(this.listusers)
+      //console.log(this.listusers)
       let output=""
       let count=0;
 	      node.chat.getOptions().client.users.list()
@@ -61,8 +62,12 @@ function SlackListUsersNode(config) {
 		//console.log(JSON.stringify(res,null,1))
 		// `res` contains information about the members
 		res.members.forEach((c) =>{ 
-			output+="\n"+c.name+"  "+c.real_name+"   "+c.profile.email; 
-			count++;
+			if ( c.name.match(regex) 
+		           || c.real_name.match.(regex) 
+			   || c.profile.email.match(regex) ){
+				output+="\n"+c.name+"  "+c.real_name+"   "+c.profile.email; 
+				count++;
+			}
 			//console.log(c.name)
 		});
 	      }).then((res) => {
