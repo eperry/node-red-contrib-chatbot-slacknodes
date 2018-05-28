@@ -12,13 +12,11 @@ function SlackListChannelsNode(config) {
     RED.nodes.createNode(this, config);
     var node = this;
 
-    var global = this.context().global;
-    var environment = 'production';
-
-    this.bot = config.bot;
-    this.botProduction = config.botProduction;
-    this.track = config.track;
-    this.config = RED.nodes.getNode(this.botProduction);
+    var global = this.context().global;  
+    var environment = this.context().global.environment === 'production' ? 'botProduction' : 'bot';
+    this.bot = config[environment];
+    this.config = RED.nodes.getNode(this.bot);
+    this.regex = config.regex || ".*";
 
     if (this.config) {
       this.status({fill: 'red', shape: 'ring', text: 'disconnected'});
@@ -44,7 +42,6 @@ function SlackListChannelsNode(config) {
     });
 
     this.on('input', function (message) {  
-      this.listchannels = config.listchannels;
        
       var chatId = utils.getChatId(message);
       var messageId = utils.getMessageId(message);
@@ -53,7 +50,6 @@ function SlackListChannelsNode(config) {
       if (!utils.matchTransport(node, message)) {
         return;
       }
-      console.log(this.listchannels)
       let output=""
       let count=0;
 	      node.chat.getOptions().client.channels.list()
@@ -91,9 +87,12 @@ function SlackListChannelsNode(config) {
 		  },
 		*************************************************/
 		// `res` contains information about the channels
+		//console.log(this.regex)
 		res.channels.forEach((c) =>{ 
-			output+="\n"+c.name+"  "+c.num_members; 
-			count++;
+			if( c.name.match(this.regex)){
+				output+="\n"+c.name+"  "+c.num_members; 
+				count++;
+			}
 			//console.log(c.name)
 		});
 	      }).then((res) => {
@@ -102,7 +101,7 @@ function SlackListChannelsNode(config) {
 		// also try to get an array of messages from config and pick one randomly
 		message.payload = {
 		    type: 'message',
-		    content: output+"\nCount ="+count,
+		    content: output+"\nFound "+count+" channels with regex '"+this.regex+"'",
 		    chatId: chatId,
 		    messageId: messageId,
 		    inbound: false

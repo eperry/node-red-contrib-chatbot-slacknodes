@@ -6,6 +6,10 @@
       botProduction: {
         value: "",
         type: 'chatbot-slack-node',
+        required: true 
+      },
+      regex: {
+        value: "",
         required: false
       },
       track: {
@@ -33,10 +37,10 @@
     <input type="text" id="node-input-botProduction" placeholder="Bot">
   </div>
   <div class="form-row" style="margin-top:25px;">
-    <label for="node-input-track">Track</label>
-    <input type="checkbox" value="true" id="node-input-track">
+    <label for="node-input-regex">Filter Regex</label>
+    <input type="text" id="node-input-regex" placeholder=".+">
     <div class="redbot-form-hint">
-    Track response of the user for this message, any further answer will be redirect to the output pin.
+    Filter channel names  
     </div>
   </div>
 </script>
