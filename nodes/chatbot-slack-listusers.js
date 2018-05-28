@@ -45,7 +45,7 @@ function SlackListUsersNode(config) {
 
     this.on('input', function (message) {  
       this.listusers = config.listusers;
-       
+      var regex = message.regex ? message.regex : this.regex;
       this.config = RED.nodes.getNode(this.bot);
       var chatId = utils.getChatId(message);
       var messageId = utils.getMessageId(message);
@@ -63,8 +63,8 @@ function SlackListUsersNode(config) {
 		// `res` contains information about the members
 		res.members.forEach((c) =>{ 
 			if ( c.name.match(regex) 
-		           || c.real_name.match.(regex) 
-			   || c.profile.email.match(regex) ){
+		           || (c.real_name && c.real_name.match(regex)) 
+			   || (c.profile && c.profile.email && c.profile.email.match(regex)) ){
 				output+="\n"+c.name+"  "+c.real_name+"   "+c.profile.email; 
 				count++;
 			}
