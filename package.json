@@ -1,0 +1,25 @@
+{
+  "name": "node-red-contrib-chatbot-slack",
+  "version": "0.1.0",
+  "description": "REDBot  Slack nodes. Almost no coding skills required",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eperry/node-red-contrib-chatbot-slack.git"
+  },
+  "node-red": {
+    "nodes": {
+      "chatbot-slack-listchannels": "./nodes/chatbot-slack-listchannels.js",
+      "chatbot-slack-listusers": "./nodes/chatbot-slack-listusers.js",
+      "chatbot-slack-receive": "./nodes/chatbot-slack-receive.js"
+    }
+  },
+  "keywords": [
+    "node-red",
+    "chatbot",
+    "slack"
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "@slack/client": "^3.14.1"
+  }
+}

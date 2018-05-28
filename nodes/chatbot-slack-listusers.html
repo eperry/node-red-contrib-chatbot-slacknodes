@@ -1,0 +1,46 @@
+<script type="text/javascript">
+  RED.nodes.registerType('chatbot-slack-listusers', {
+    category: 'RedBot Platforms',
+    color: '#FFCC66',
+    defaults: {
+      botProduction: {
+        value: "",
+        type: 'chatbot-slack-node',
+        required: false
+      },
+      track: {
+        value: false
+      },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: 'chatbot-slack-users.png',
+    paletteLabel: 'Slack ListUsers',
+    label: function () {
+	return 'Slack List All Users';
+    },
+    oneditsave: function() {
+      var track = $('#node-input-track').is(':checked');
+      //this.outputs = track ? 1 : 0;
+    }
+  });
+</script>
+
+<script type="text/x-red" data-template-name="chatbot-slack-listusers">
+ <div class="form-row">
+  <div class="form-row" style="margin-top:25px;">
+    <label for="node-input-botProduction" style="display:block;width:100%;">Bot configuration <span class="redbot-environment">(production)</span></label>
+    <input type="text" id="node-input-botProduction" placeholder="Bot">
+  </div>
+  <div class="form-row" style="margin-top:25px;">
+    <label for="node-input-track">Track</label>
+    <input type="checkbox" value="true" id="node-input-track">
+    <div class="redbot-form-hint">
+    Track response of the user for this message, any further answer will be redirect to the output pin.
+    </div>
+  </div>
+</script>
+
+<script type="text/x-red" data-help-name="chatbot-slack-listusers">
+  <p>ListUsers for Slack.</p>
+</script>
