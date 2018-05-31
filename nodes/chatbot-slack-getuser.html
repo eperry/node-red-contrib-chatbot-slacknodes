@@ -1,0 +1,41 @@
+<script type="text/javascript">
+  RED.nodes.registerType('chatbot-slack-getuser', {
+    category: 'RedBot Platforms',
+    color: '#FFCC66',
+    defaults: {
+      botProduction: {
+        value: "",
+        type: 'chatbot-slack-node',
+        required: false
+      },
+      field: {
+        value: "payload",
+        required: false
+      }
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: 'chatbot-slack-users.png',
+    paletteLabel: 'Slack Get User',
+    label: function () {
+	return 'Slack Get User';
+    }
+  });
+</script>
+
+<script type="text/x-red" data-template-name="chatbot-slack-getuser">
+ <div class="form-row">
+  <div class="form-row" style="margin-top:25px;">
+    <label for="node-input-botProduction" style="display:block;width:100%;">Bot configuration <span class="redbot-environment">(production)</span></label>
+    <input type="text" id="node-input-botProduction" placeholder="Bot">
+  </div>
+  <div class="form-row" style="margin-top:25px;">
+    <label for="node-input-field" style="display:block;width:100%;">User field</label>
+    <input type="text" id="node-input-field" placeholder="payload">
+  </div>
+ </div>
+</script>
+
+<script type="text/x-red" data-help-name="chatbot-slack-getuser">
+  <p>Get Users for Slack.</p>
+</script>
